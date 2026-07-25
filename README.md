@@ -1,3 +1,51 @@
+# 2FAS Auth + React Native
+
+Experimental fork of [twofas/2fas-android](https://github.com/twofas/2fas-android)
+testing brownfield support for existing Android codebases. Reference for
+integrating React Native (via Expo) into an existing native app without
+refactoring the project structure.
+
+Uses Expo's brownfield **isolated** approach: the RN + Expo code is built into a
+prebuilt **AAR** and consumed like any other Maven dependency. A floating "Expo"
+button on the onboarding screen launches an `ExpoActivity` that renders the React
+Native screen (JS bundle embedded in the release AAR, so no Metro).
+
+## Integration steps
+
+1. `npx create-expo-app@latest expo-app --template default@canary` (in `./expo-app`)
+2. Build the AAR:
+   ```sh
+   cd expo-app
+   npx expo install expo-brownfield expo-build-properties
+   npx expo prebuild -p android --clean
+   npx expo-brownfield build:android --release --fused --verbose
+   ```
+   Published to local Maven as `com.twofasapp.brownfield:twofasbrownfield-fused-release`.
+3. Consume from `app/build.gradle.kts`, launch from `ExpoActivity`. Build:
+   `assembleDebug`.
+
+### Notes for reproducing the build
+
+2FAS uses a convention-plugin build (`buildlogic`) that expects encrypted signing
+config; for the fork these are replaced with placeholders:
+
+- **`minSdk` 23 -> 24** (`buildlogic/.../AppConfig.kt`) — React Native floor.
+- **`mavenLocal()`** (scoped) in `settings.gradle.kts` (`FAIL_ON_PROJECT_REPOS`).
+- **`config/config.properties` + `config/debug_signing.jks`** — the
+  `twofas.androidApplication` plugin reads signing config from these (the repo
+  ships git-crypt-encrypted `.enc` versions). A standard debug keystore +
+  matching properties are committed (no secrets).
+- **`app/google-services.json`** — placeholder (the google-services plugin is
+  applied unconditionally; no real Firebase project).
+- `reactNativeArchitectures=arm64-v8a`. No compileSdk/Kotlin bump (compileSdk 36,
+  Kotlin 2.2). No androidsvg/`maxSdkVersion` conflict (2FAS uses Coil without the
+  SVG decoder and declares no legacy storage permissions).
+
+---
+
+<details>
+<summary>2FAS Auth (original README)</summary>
+
 # Open Source 2FAS for Android
 
 This is the official Android app for the Open Source 2FAS project.
@@ -43,3 +91,6 @@ We appreciate your support!
 Copyright (c) Two Factor Authentication Service, Inc. All rights reserved.
 
 Licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+
+</details>
