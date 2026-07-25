@@ -141,6 +141,12 @@
             </intent-filter>
 
         </activity>
+        <!-- Expo brownfield: hosts the React Native screen from the Expo AAR -->
+        <activity
+            android:name="com.twofasapp.ExpoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" />
 
         <activity
             android:name=".ui.main.MainActivity"

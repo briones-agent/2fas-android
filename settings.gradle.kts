@@ -10,6 +10,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        mavenLocal {
+            content { includeGroup("com.twofasapp.brownfield") }
+        }
         google()
         mavenCentral()
         maven { url = uri("https://jitpack.io") }

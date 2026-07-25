@@ -113,6 +113,34 @@ class MainActivity : AppCompatActivity(), AuthAware {
 
         attachAuthLifecycleObserver()
         checkAppVersionUpdate()
+
+        addExpoLaunchButton()
+    }
+
+    /**
+     * Brownfield demo entry point: a floating "Expo" button overlaid on the
+     * Compose content that launches [com.twofasapp.ExpoActivity], which renders
+     * the React Native screen from the Expo brownfield AAR. Added as a plain View
+     * on android.R.id.content to avoid touching the Compose tree.
+     */
+    private fun addExpoLaunchButton() {
+        val content = findViewById<android.widget.FrameLayout>(android.R.id.content) ?: return
+        val button = android.widget.Button(this).apply {
+            text = "Expo"
+            contentDescription = "Open Expo React Native screen"
+            setOnClickListener {
+                startActivity(android.content.Intent(this@MainActivity, com.twofasapp.ExpoActivity::class.java))
+            }
+        }
+        val margin = (16 * resources.displayMetrics.density).toInt()
+        val lp = android.widget.FrameLayout.LayoutParams(
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+        ).apply {
+            gravity = android.view.Gravity.END or android.view.Gravity.CENTER_VERTICAL
+            marginEnd = margin
+        }
+        content.addView(button, lp)
     }
 
     override fun onResume() {

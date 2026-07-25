@@ -33,7 +33,19 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
-      ]
+      ],
+      [
+        "expo-brownfield",
+        {
+          "android": {
+            "libraryName": "twofasbrownfield",
+            "group": "com.twofasapp.brownfield",
+            "package": "com.twofasapp.brownfield",
+            "version": "1.0.0"
+          }
+        }
+      ],
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true,

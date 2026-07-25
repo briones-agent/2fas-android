@@ -32,6 +32,9 @@ android {
 }
 
 dependencies {
+    // Expo brownfield: fused React Native AAR (JS bundle embedded, no Metro).
+    implementation("com.twofasapp.brownfield:twofasbrownfield-fused-release:1.0.0")
+
     implementation(project(":core:common"))
     implementation(project(":core:android"))
     implementation(project(":core:designsystem"))
